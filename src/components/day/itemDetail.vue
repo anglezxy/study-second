@@ -1,7 +1,7 @@
 <template>
   <div>
     {{imageDetail.title}}
-    {{imageDetail.copyright}}
+    <img :src="imageDetail.imageName"/>
   </div>
 </template>
 
@@ -11,23 +11,24 @@
         name: "itemDetail",
         data(){
           return {
-            imageDetail:''
+            imageDetail:{}
           }
         },
       created(){
-
+        this.getData();
       },
       methods:{
           getData(){
             const id=this.$route.params.id;
-            if(!id)
-            {
-              //出错
-            }
-           instance.get('/bing/detail',{id})
-              .then(({data})=>{
-
-              }).catch(error=>{
+            console.log(id);
+           instance.get(`/bing/${id}`)
+              .then(({data:{code,message,data}}) => {
+                if(code !== 0){
+                  alert(message);
+                }else {
+                  this.imageDetail = data;
+                }
+              }).catch((error)=>{
 
             });
           }
