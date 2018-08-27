@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import instance from '../../util/baseAxios.js'
+  import instanceAxios from '../../util/baseAxios.js'
     export default {
         name: "itemDetail",
         data(){
@@ -21,7 +21,7 @@
           getData(){
             const id=this.$route.params.id;
             console.log(id);
-           instance.get(`/bing/${id}`)
+            instanceAxios.get(`/bing/${id}`)
               .then(({data:{code,message,data}}) => {
                 if(code !== 0){
                   alert(message);

@@ -14,7 +14,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import instance from '../util/baseAxios.js'
+  import instanceAxios from '../util/baseAxios.js'
 export default {
   data () {
     return {
@@ -27,7 +27,7 @@ export default {
  },
   methods:{
      getData(){
-      instance.get('/bing/list')
+       instanceAxios.get('/bing/list')
         .then(({data:{ code,message,data }}) =>{
           console.log(data)
           this.imageList=data.content;

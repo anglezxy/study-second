@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { endpoint } from '../settings.json';
 
-const instance = axios.create({
+const instanceAxios = axios.create({
   baseURL:`${endpoint}`,
   timeout: 20000,
   responseType: 'json',
@@ -13,4 +13,4 @@ const instance = axios.create({
   }],
 });
 
-export default instance;
+export default instanceAxios;
