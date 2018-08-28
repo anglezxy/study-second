@@ -21,7 +21,7 @@
     <!-- Photo grid -->
     <div class="w3-row" >
       <div class="w3-third" v-for="item in imageList">
-        <img :src="item.imageName" style="width:100%" onclick="onClick(this)" alt="Canoeing again">
+        <img :src="item.imageName" style="width:100%" @click="$router.openPage(`/item/${item.id}`)" alt="Canoeing again">
       </div>
       <!--<div class="w3-third">
         <img src="http://osknozmcz.bkt.clouddn.com/BadlandsCycle_ZH-CN11688990875_1920x1080.jpg" style="width:100%" onclick="onClick(this)" alt="Quiet day at the beach. Cold, but beautiful">
@@ -58,12 +58,12 @@
     <!-- Pagination -->
     <div class="w3-center w3-padding-32">
       <div class="w3-bar">
-        <a href="https://www.w3schools.com/w3css/tryw3css_templates_portfolio3.htm#" class="w3-bar-item w3-button w3-hover-black">«</a>
-        <a href="https://www.w3schools.com/w3css/tryw3css_templates_portfolio3.htm#" class="w3-bar-item w3-black w3-button">1</a>
-        <a href="https://www.w3schools.com/w3css/tryw3css_templates_portfolio3.htm#" class="w3-bar-item w3-button w3-hover-black">2</a>
-        <a href="https://www.w3schools.com/w3css/tryw3css_templates_portfolio3.htm#" class="w3-bar-item w3-button w3-hover-black">3</a>
-        <a href="https://www.w3schools.com/w3css/tryw3css_templates_portfolio3.htm#" class="w3-bar-item w3-button w3-hover-black">4</a>
-        <a href="https://www.w3schools.com/w3css/tryw3css_templates_portfolio3.htm#" class="w3-bar-item w3-button w3-hover-black">»</a>
+        <a @click="getData(`${currentPage -1}`)" class="w3-bar-item w3-button w3-hover-black">«</a>
+        <a @click="getData(1)" class="w3-bar-item w3-button w3-black"  >1</a>
+        <a @click="getData(2)" class="w3-bar-item w3-button w3-hover-black">2</a>
+        <a @click="getData(3)" class="w3-bar-item w3-button w3-hover-black">3</a>
+        <a @click="getData(4)" class="w3-bar-item w3-button w3-hover-black">4</a>
+        <a @click="getData(`${currentPage -1}`)" class="w3-bar-item w3-button w3-hover-black">»</a>
       </div>
     </div>
     <!-- Modal for full size images on click-->
@@ -112,21 +112,34 @@
     data() {
       return {
         imageList: [],
+        number:0,
+        totalPage:0,
+        currentPage:0,
+        isBlack: true,
       }
     },
 
     created() {
-      this.getData();
+      this.getData(this.number);
     },
     methods: {
-      getData() {
-        instanceAxios.get('/bing/list')
+      getData(number) {
+        if(number<0){
+          number=0;
+        }
+        if(this.totalPage<number){
+          number=this.totalPage;
+        }
+        instanceAxios.get(`/bing/list?page=${number}`)
           .then(({data: {code, message, data}}) => {
             console.log(data);
             if (code !== 0) {
               alert(message);
             } else {
               this.imageList = data.content;
+              this.currentPage=data.number;
+              this.totalPage=data.totalPage;
+
             }
           }).catch((error) => {
           console.log(error);
