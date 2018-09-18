@@ -7,13 +7,15 @@
 
     <!-- 路由匹配到的组件将渲染在这里-->
     <router-view/>
-
+  <foot-guide></foot-guide>
   </div>
 </template>
 
 <script>
+import FootGuide from "./components/footer/footGuide";
 export default {
-  name: 'App'
+  name: 'App',
+  components: { FootGuide }
 }
 </script>
 

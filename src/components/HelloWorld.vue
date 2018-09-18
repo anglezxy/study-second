@@ -57,13 +57,14 @@
     </div>
     <!-- Pagination -->
     <div class="w3-center w3-padding-32">
-      <div class="w3-bar">
+      <div class="w3-bar" >
+        <!--<a v-for="(value,index) in pageable" @click="getData(`${currentPage ==pageable.}`)"></a>-->
         <a @click="getData(`${currentPage -1}`)" class="w3-bar-item w3-button w3-hover-black">«</a>
-        <a @click="getData(1)" class="w3-bar-item w3-button w3-black"  >1</a>
-        <a @click="getData(2)" class="w3-bar-item w3-button w3-hover-black">2</a>
-        <a @click="getData(3)" class="w3-bar-item w3-button w3-hover-black">3</a>
-        <a @click="getData(4)" class="w3-bar-item w3-button w3-hover-black">4</a>
-        <a @click="getData(`${currentPage -1}`)" class="w3-bar-item w3-button w3-hover-black">»</a>
+        <a @click="getData(0)" class="w3-bar-item w3-button "  :class="{ 'active': 0===currentPage }">1</a>
+        <a @click="getData(1)" class="w3-bar-item w3-button w3-hover-black" :class="{ 'active': 1===currentPage }">2</a>
+        <a @click="getData(2)" class="w3-bar-item w3-button w3-hover-black" :class="{ 'active': 2===currentPage }">3</a>
+        <a @click="getData(3)" class="w3-bar-item w3-button w3-hover-black" :class="{ 'active': 3===currentPage }">4</a>
+        <a @click="getData(`${currentPage +1}`)" class="w3-bar-item w3-button w3-hover-black">»</a>
       </div>
     </div>
     <!-- Modal for full size images on click-->
@@ -112,10 +113,11 @@
     data() {
       return {
         imageList: [],
+        pageable:{},
         number:0,
         totalPage:0,
         currentPage:0,
-        isBlack: true,
+
       }
     },
 
@@ -132,14 +134,13 @@
         }
         instanceAxios.get(`/bing/list?page=${number}`)
           .then(({data: {code, message, data}}) => {
-            console.log(data);
             if (code !== 0) {
               alert(message);
             } else {
               this.imageList = data.content;
+              this.pageable=data.pageable;
               this.currentPage=data.number;
               this.totalPage=data.totalPage;
-
             }
           }).catch((error) => {
           console.log(error);
@@ -156,8 +157,10 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-@import "../assets/css";
-  @import "../assets/st.css";
-
+ @import "../assets/css";
+ @import "../assets/st.css";
+  .active{
+    background-color: red;
+  }
 
 </style>
